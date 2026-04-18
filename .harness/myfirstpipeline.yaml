@@ -39,8 +39,8 @@ pipeline:
                   spec:
                     shell: Bash
                     command: |-
-                      cd /harness/SmallestSpringApp
-                      mvn org.apache.maven.plugins:maven-compiler-plugin:compile org.apache.maven.plugins:maven-surefire-plugin:test
+                      chmod +x /harness/SmallestSpringApp/build.sh
+                      /harness/SmallestSpringApp/build.sh
               - step:
                   type: BuildAndPushDockerRegistry
                   name: Build and Push
