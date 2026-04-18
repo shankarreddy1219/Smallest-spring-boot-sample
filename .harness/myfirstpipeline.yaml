@@ -39,8 +39,10 @@ pipeline:
                   spec:
                     shell: Bash
                     command: |-
-                      chmod +x /harness/SmallestSpringApp/build.sh
-                      /harness/SmallestSpringApp/build.sh
+                      #!/bin/bash
+                      set -e
+                      cd /harness/SmallestSpringApp
+                      exec mvn clean test
               - step:
                   type: BuildAndPushDockerRegistry
                   name: Build and Push
