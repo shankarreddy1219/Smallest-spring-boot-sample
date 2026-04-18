@@ -49,11 +49,11 @@ pipeline:
                   identifier: Code_Quality_SonarQube
                   spec:
                     connectorRef: first_Docker
-                    image: maven:3.9.6-eclipse-temurin-11
+                    image: maven:3.9.6-eclipse-temurin-17
                     shell: Bash
                     command: |-
                       cd /harness/SmallestSpringApp
-                      mvn sonar:sonar -Dsonar.projectKey=shankarreddy1219_Smallest-spring-boot-sample -Dsonar.organization=shankarreddy1219 -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
+                      mvn sonar:sonar -Dsonar.projectKey=shankarreddy1219_Smallest-spring-boot-sample -Dsonar.organization=shankarreddy1219 -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN -Dmaven.compiler.source=11 -Dmaven.compiler.target=11
                     envVariables:
                       SONAR_TOKEN: <+secrets.getValue("sonar_token")>
               - step:
