@@ -20,7 +20,7 @@ pipeline:
           cloneCodebase: true
           caching:
             enabled: false
-            override: true
+            override: false
             paths: []
           buildIntelligence:
             enabled: false
@@ -37,12 +37,25 @@ pipeline:
                   name: Run Tests
                   identifier: Run_Tests
                   spec:
+                    connectorRef: first_Docker
+                    image: maven:3.9.6-eclipse-temurin-11
                     shell: Bash
                     command: |-
-                      #!/bin/bash
-                      set -e
                       cd /harness/SmallestSpringApp
-                      exec mvn clean test
+                      mvn clean test
+              - step:
+                  type: Run
+                  name: Code Quality - SonarQube
+                  identifier: Code_Quality_SonarQube
+                  spec:
+                    connectorRef: first_Docker
+                    image: maven:3.9.6-eclipse-temurin-11
+                    shell: Bash
+                    command: |-
+                      cd /harness/SmallestSpringApp
+                      mvn sonar:sonar -Dsonar.projectKey=shankarreddy1219_Smallest-spring-boot-sample -Dsonar.organization=shankarreddy1219 -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
+                    envVariables:
+                      SONAR_TOKEN: <+secrets.getValue("sonar_token")>
               - step:
                   type: BuildAndPushDockerRegistry
                   name: Build and Push
@@ -61,18 +74,6 @@ pipeline:
                   identifier: Trivy_Image_Scan
                   spec:
                     connectorRef: first_Docker
-                    image: maven:3.9.6-eclipse-temurin-11
+                    image: aquasec/trivy:latest
                     shell: Sh
-              - step:
-                  type: Run
-                  name: Code Quality - SonarQube
-                  identifier: Code_Quality_SonarQube
-                  spec:
-                    connectorRef: first_Docker
-                    image: maven:3.9.6-eclipse-temurin-11
-                    shell: Bash
-                    command: |-
-                      cd /harness/SmallestSpringApp
-                      mvn sonar:sonar -Dsonar.projectKey=3492816ef74aade9d458eae103591fe4b54e5473 -Dsonar.organization=shankarreddy1219 -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
-                    envVariables:
-                      SONAR_TOKEN: <+secrets.getValue("sonar_token")>
+                    command: trivy image --exit-code 0 --severity HIGH,CRITICAL --no-progress shankar1219/harness:latest
