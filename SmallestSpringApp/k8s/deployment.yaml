@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smallest-spring-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smallest-spring-app
+  template:
+    metadata:
+      labels:
+        app: smallest-spring-app
+    spec:
+      containers:
+        - name: smallest-spring-app
+          image: shankar1219/harness:latest
+          ports:
+            - containerPort: 8080
