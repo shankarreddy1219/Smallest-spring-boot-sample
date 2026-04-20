@@ -73,3 +73,41 @@ pipeline:
                     image: aquasec/trivy:latest
                     shell: Sh
                     command: trivy image --exit-code 0 --severity HIGH,CRITICAL --no-progress shankar1219/harness:latest
+    - stage:
+        name: Deploy to Minikube
+        identifier: Deploy_to_Minikube
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: Kubernetes
+          service:
+            serviceRef: springbootapp
+          environment:
+            environmentRef: minikubedev
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: minikubeinfra
+          execution:
+            steps:
+              - step:
+                  type: K8sRollingDeploy
+                  name: K8sRollingDeploy_1
+                  identifier: K8sRollingDeploy_1
+                  spec:
+                    skipDryRun: false
+                    pruningEnabled: false
+                  timeout: 10m
+            rollbackSteps:
+              - step:
+                  type: K8sRollingRollback
+                  name: K8sRollingRollback_1
+                  identifier: K8sRollingRollback_1
+                  spec: {}
+                  timeout: 10m
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
