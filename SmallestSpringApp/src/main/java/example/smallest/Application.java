@@ -16,7 +16,7 @@ public class Application extends SpringBootServletInitializer {
     private static CfClient cfClient;
 
     public static void main(String[] args) {
-        cfClient = new CfClient("YOUR_SDK_KEY");
+        cfClient = new CfClient("206b6d15-7afc-4e4f-8788-0641564320c1");
         SpringApplication.run(Application.class, args);
     }
 
