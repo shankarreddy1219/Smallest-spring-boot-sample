@@ -142,3 +142,19 @@ pipeline:
                 - AllErrors
               action:
                 type: StageRollback
+  notificationRules:
+    - name: pipeline-email-notification
+      identifier: pipelineemailnotification
+      pipelineEvents:
+        - type: PipelineSuccess
+        - type: PipelineFailed
+        - type: StageFailed
+          forStages:
+            - AllStages
+      notificationMethod:
+        type: Email
+        spec:
+          userGroups: []
+          recipients:
+            - shankarreddy.k3281@gmail.com
+      enabled: true
