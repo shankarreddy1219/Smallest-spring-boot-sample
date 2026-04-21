@@ -90,12 +90,17 @@ pipeline:
           execution:
             steps:
               - step:
-                  type: K8sRollingDeploy
-                  name: K8sRollingDeploy_1
-                  identifier: K8sRollingDeploy_1
+                  type: K8sBlueGreenStageScaleDown
+                  name: Blue Green Deploy
+                  identifier: Blue_Green_Deploy
                   spec:
-                    skipDryRun: false
-                    pruningEnabled: false
+                    deleteResources: false
+                  timeout: 10m
+              - step:
+                  type: K8sBGSwapServices
+                  name: Swap Services
+                  identifier: Swap_Services
+                  spec: {}
                   timeout: 10m
             rollbackSteps:
               - step:
