@@ -90,11 +90,13 @@ pipeline:
           execution:
             steps:
               - step:
-                  type: K8sBlueGreenStageScaleDown
+                  type: K8sBlueGreenDeploy
                   name: Blue Green Deploy
                   identifier: Blue_Green_Deploy
                   spec:
-                    deleteResources: false
+                    skipDryRun: false
+                    pruningEnabled: false
+                    skipUnchangedManifest: false
                   timeout: 10m
               - step:
                   type: K8sBGSwapServices
