@@ -1,0 +1,14 @@
+inputSet:
+  name: master-branch-input
+  identifier: masterbranchinput
+  orgIdentifier: default
+  projectIdentifier: myfirstci
+  pipeline:
+    identifier: myfirstpipeline
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
