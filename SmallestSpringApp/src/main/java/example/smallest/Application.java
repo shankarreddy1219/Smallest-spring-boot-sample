@@ -16,7 +16,10 @@ public class Application extends SpringBootServletInitializer {
     private static CfClient cfClient;
 
     public static void main(String[] args) {
-        cfClient = new CfClient("206b6d15-7afc-4e4f-8788-0641564320c1");
+        String sdkKey = System.getenv("FF_SDK_KEY") != null
+            ? System.getenv("FF_SDK_KEY")
+            : "206b6d15-7afc-4e4f-8788-0641564320c1";
+        cfClient = new CfClient(sdkKey);
         SpringApplication.run(Application.class, args);
     }
 
@@ -28,7 +31,7 @@ public class Application extends SpringBootServletInitializer {
             .build();
 
         boolean newGreeting = cfClient.boolVariation(
-            "new_greeting_feature", target, false
+            "My_Test_Flag", target, false
         );
 
         if (newGreeting) {
