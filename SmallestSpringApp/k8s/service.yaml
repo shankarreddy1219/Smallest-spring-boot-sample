@@ -5,7 +5,6 @@ metadata:
 spec:
   selector:
     app: smallest-spring-app
-    harness.io/color: blue
   ports:
     - protocol: TCP
       port: 80
