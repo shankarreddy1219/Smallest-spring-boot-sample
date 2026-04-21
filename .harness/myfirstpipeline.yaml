@@ -94,7 +94,7 @@ pipeline:
                   name: Canary Deployment
                   identifier: Canary_Deployment
                   spec:
-                    skipDryRun: false
+                    skipDryRun: true
                     instanceSelection:
                       type: Count
                       spec:
